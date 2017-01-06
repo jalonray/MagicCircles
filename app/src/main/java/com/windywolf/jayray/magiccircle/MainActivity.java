@@ -1,6 +1,7 @@
 package com.windywolf.jayray.magiccircle;
 
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -42,6 +43,8 @@ public class MainActivity extends AppCompatActivity {
     private CirclePool circlePool;
     private ReverseInterpolator interpolator;
 
+    private boolean dark = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,6 +74,15 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 hideSystemUI();
+                return true;
+            }
+        });
+        item = menu.add("D&B");
+        item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                dark = !dark;
+                getWindow().setBackgroundDrawable(new ColorDrawable(dark ? Color.BLACK : Color.WHITE));
                 return true;
             }
         });
@@ -156,11 +168,11 @@ public class MainActivity extends AppCompatActivity {
     public RelativeLayout.LayoutParams generateParams(CircleView circleView) {
         Log.d(TAG, "generateParams: " + circleView.toString());
         RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) circleView.getLayoutParams();
-        int width = layout.getWidth() - dp2px(32);
-        int height = layout.getHeight() - dp2px(32);
-        float radius = random.nextFloat() * (Math.min(width, height) / 2 - 10) + 10;
-        float x = random.nextFloat() * (width - radius * 2) + dp2px(16);
-        float y = random.nextFloat() * (height - radius * 2) + dp2px(16);
+        int width = layout.getWidth() - dp2px(42);
+        int height = layout.getHeight() - dp2px(42);
+        float radius = random.nextFloat() * (Math.min(width, height) / 2 - dp2px(42)) + dp2px(42);
+        float x = random.nextFloat() * (width - radius * 2) + dp2px(21);
+        float y = random.nextFloat() * (height - radius * 2) + dp2px(21);
         Log.d(TAG, "width: " + radius * 2);
         Log.d(TAG, "radius: " + radius);
         Log.d(TAG, "x: " + x);
@@ -255,8 +267,8 @@ public class MainActivity extends AppCompatActivity {
             CircleView circleView = activity.generateCircle();
             RelativeLayout.LayoutParams params = activity.generateParams(circleView);
             float radius = params.width / 2;
-            float stroke = random.nextFloat() * radius / 3f;
-            int color = Color.argb(random.nextInt(65) + 190, random.nextInt(255), random.nextInt(255), random.nextInt(255));
+            float stroke = random.nextFloat() * (radius / 2f - 8.4f) + 8.4f;
+            int color = Color.argb(random.nextInt(42) + 213, random.nextInt(255), random.nextInt(255), random.nextInt(255));
             circleView.setStroke(stroke);
             circleView.setColor(color);
             if (circleView.getLayoutParams() == null) {
